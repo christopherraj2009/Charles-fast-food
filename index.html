@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Charles Fast Food | சார்லஸ் ஃபாஸ்ட் ஃபுட்</title>
+  <style>
+    :root {
+      --primary: #d90429;
+      --primary-dark: #9b001d;
+      --accent: #ffb703;
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --text: #1d3557;
+      --muted: #6c757d;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', 'Noto Sans Tamil', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      padding-bottom: 115px;
+    }
+
+    header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      text-align: center;
+      padding: 18px 16px 22px;
+      position: relative;
+    }
+
+    .top-nav-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      max-width: 960px;
+      margin: 0 auto 8px;
+      padding: 0 4px;
+    }
+
+    .hamburger-btn {
+      background: rgba(0, 0, 0, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.2s;
+    }
+
+    .hamburger-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    .lang-toggle {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.35);
+      padding: 3px;
+      border-radius: 22px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+    }
+
+    .lang-btn {
+      border: none;
+      padding: 5px 14px;
+      border-radius: 18px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      cursor: pointer;
+      color: white;
+      background: transparent;
+      transition: 0.2s;
+    }
+
+    .lang-btn.active {
+      background: #ffffff;
+      color: var(--primary-dark);
+    }
+
+    .header-logo {
+      display: block;
+      margin: 0 auto 10px;
+      max-height: 85px;
+      width: auto;
+      border-radius: 50%;
+    }
+
+    header h1 {
+      font-size: 1.85rem;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    header p {
+      font-size: 0.95rem;
+      opacity: 0.95;
+      margin-bottom: 12px;
+    }
+
+    .header-links {
+      margin-bottom: 16px;
+    }
+
+    .map-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.16);
+      color: #fff;
+      text-decoration: none;
+      padding: 6px 14px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      transition: 0.2s;
+    }
+
+    .map-pill:hover {
+      background: white;
+      color: var(--primary-dark);
+    }
+
+    .mode-toggle {
+      display: inline-flex;
+      background: rgba(0, 0, 0, 0.28);
+      padding: 4px;
+      border-radius: 30px;
+      gap: 4px;
+    }
+
+    .mode-btn {
+      border: none;
+      padding: 8px 20px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+      color: white;
+      background: transparent;
+      transition: 0.2s;
+    }
+
+    .mode-btn.active {
+      background: var(--accent);
+      color: #111;
+    }
+
+    /* HAMBURGER SIDEBAR DRAWER */
+    .drawer-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      z-index: 100;
+      justify-content: flex-start;
+    }
+
+    .drawer-overlay.open {
+      display: flex;
+    }
+
+    .drawer {
+      background: white;
+      color: var(--text);
+      width: 100%;
+      max-width: 380px;
+      height: 100%;
+      box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      animation: slideInLeft 0.3s ease;
+      overflow-y: auto;
+    }
+
+    @keyframes slideInLeft {
+      from { transform: translateX(-100%); }
+      to { transform: translateX(0); }
+    }
+
+    .drawer-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .drawer-header h3 {
+      font-size: 1.2rem;
+    }
+
+    .drawer-close {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .drawer-body {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      flex-grow: 1;
+    }
+
+    .drawer-section-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    /* Navigation Filter Links inside Drawer */
+    .drawer-nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .drawer-nav-btn {
+      background: #f1f3f5;
+      border: none;
+      text-align: left;
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .drawer-nav-btn:hover, .drawer-nav-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-group label {
+      font-size: 0.88rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .form-group input, 
+    .form-group textarea, 
+    .form-group select {
+      padding: 10px 12px;
+      border: 1px solid #ced4da;
+      border-radius: 8px;
+      font-size: 0.92rem;
+      outline: none;
+      transition: 0.2s;
+    }
+
+    .form-group input:focus, 
+    .form-group textarea:focus, 
+    .form-group select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(217, 4, 41, 0.15);
+    }
+
+    .whatsapp-order-btn {
+      background: #25d366;
+      color: white;
+      border: none;
+      padding: 12px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: 0.2s;
+      margin-top: 5px;
+    }
+
+    .whatsapp-order-btn:hover {
+      background: #1ebe5d;
+    }
+
+    .menu-container {
+      max-width: 960px;
+      margin: 25px auto;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(265px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card);
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-img-wrap {
+      position: relative;
+      width: 100%;
+      height: 165px;
+      background: #e9ecef;
+      cursor: pointer;
+    }
+
+    .card-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .badge {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 0.72rem;
+      font-weight: bold;
+      padding: 4px 9px;
+      border-radius: 6px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    }
+
+    .veg {
+      background: #d8f3dc;
+      color: #2d6a4f;
+    }
+
+    .non-veg {
+      background: #ffe5ec;
+      color: #c9184a;
+    }
+
+    .card-body {
+      padding: 14px 16px 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      flex-grow: 1;
+    }
+
+    .card h3 {
+      font-size: 1.12rem;
+      margin-bottom: 5px;
+    }
+
+    .rate-compare {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-bottom: 14px;
+    }
+
+    .card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #f1f3f5;
+      padding-top: 12px;
+    }
+
+    .price {
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .price span {
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--muted);
+      display: block;
+    }
+
+    .add-btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .add-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .qty-stepper {
+      display: inline-flex;
+      align-items: center;
+      background: #fff0f3;
+      border: 1.5px solid var(--primary);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .qty-stepper button {
+      background: var(--primary);
+      color: white;
+      border: none;
+      width: 30px;
+      height: 32px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .qty-stepper button:hover {
+      background: var(--primary-dark);
+    }
+
+    .qty-stepper span {
+      padding: 0 11px;
+      font-weight: 800;
+      font-size: 0.98rem;
+      color: var(--primary-dark);
+      min-width: 32px;
+      text-align: center;
+    }
+
+    .history-section {
+      max-width: 928px;
+      margin: 36px auto 24px;
+      padding: 32px 24px;
+      background: white;
+      border-radius: 18px;
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.08);
+      border-top: 6px solid var(--primary);
+    }
+
+    .history-header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .history-tag {
+      display: inline-block;
+      background: #fff3cd;
+      color: #856404;
+      font-size: 0.8rem;
+      font-weight: 700;
+      padding: 5px 14px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      letter-spacing: 0.6px;
+    }
+
+    .history-header h2 {
+      font-size: 1.65rem;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .history-header p {
+      font-size: 0.96rem;
+      color: var(--muted);
+      max-width: 680px;
+      margin: 0 auto;
+      line-height: 1.55;
+    }
+
+    .timeline {
+      position: relative;
+      padding-left: 28px;
+      border-left: 3px solid var(--primary);
+      margin: 0 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+
+    .timeline-item {
+      position: relative;
+      background: var(--bg);
+      padding: 16px 18px;
+      border-radius: 12px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: -37px;
+      top: 20px;
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 3px solid var(--primary);
+    }
+
+    .timeline-year {
+      display: inline-block;
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+      letter-spacing: 0.4px;
+    }
+
+    .timeline-item h3 {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .timeline-item p {
+      font-size: 0.93rem;
+      line-height: 1.65;
+      color: #495057;
+    }
+
+    .location-card {
+      margin-top: 24px;
+      padding: 20px;
+      background: #fff8e7;
+      border: 1px solid #ffe08a;
+      border-radius: 14px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .location-card h4 {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
+
+    .location-card p {
+      font-size: 0.9rem;
+      color: #495057;
+    }
+
+    .directions-btn {
+      background: var(--primary);
+      color: white;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.92rem;
+      display: inline-block;
+      transition: 0.2s;
+    }
+
+    .directions-btn:hover {
+      background: var(--primary-dark);
+    }
+
+    .history-quote {
+      margin-top: 22px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, var(--text), #2b4c7e);
+      color: white;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 0.98rem;
+      font-weight: 600;
+      line-height: 1.55;
+    }
+
+    .history-quote span {
+      display: block;
+      margin-top: 6px;
+      font-size: 0.85rem;
+      color: var(--accent);
+      font-weight: 700;
+    }
+
+    .cart-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #111d35;
+      color: #ffffff;
+      padding: 14px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 3px solid var(--accent);
+      box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.3);
+      z-index: 20;
+    }
+
+    .cart-summary-box {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .cart-top-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.08rem;
+      flex-wrap: wrap;
+    }
+
+    .cart-badge-count {
+      background: rgba(255, 255, 255, 0.16);
+      padding: 3px 10px;
+      border-radius: 8px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .cart-total-amount {
+      color: var(--accent);
+      font-size: 1.28rem;
+      font-weight: 800;
+    }
+
+    .cart-mode-tag {
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: #d8e2dc;
+      letter-spacing: 0.3px;
+    }
+
+    .cart-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .cart-actions button {
+      background: #2a9d8f;
+      color: white;
+      border: none;
+      padding: 11px 16px;
+      border-radius: 10px;
+      font-size: 0.92rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .cart-actions button:hover {
+      filter: brightness(1.08);
+    }
+
+    .cart-actions button.clear-btn {
+      background: #495057;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 50;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
+    .receipt-box {
+      background: white;
+      color: #111;
+      width: 100%;
+      max-width: 460px;
+      border-radius: 14px;
+      padding: 24px 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    .receipt-header {
+      text-align: center;
+      border-bottom: 2px dashed #ccc;
+      padding-bottom: 12px;
+      margin-bottom: 12px;
+    }
+
+    .receipt-header h2 {
+      font-size: 1.3rem;
+      color: #111;
+      margin-bottom: 4px;
+    }
+
+    .receipt-header p {
+      font-size: 0.82rem;
+      color: #444;
+      line-height: 1.45;
+    }
+
+    .receipt-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      color: #333;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #eee;
+      gap: 8px;
+    }
+
+    .receipt-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 14px;
+      font-size: 0.88rem;
+    }
+
+    .receipt-table th {
+      text-align: left;
+      border-bottom: 1px solid #bbb;
+      padding: 6px 3px;
+      font-size: 0.8rem;
+      color: #444;
+    }
+
+    .receipt-table td {
+      padding: 8px 3px;
+      border-bottom: 1px dashed #e5e5e5;
+      vertical-align: middle;
+    }
+
+    .receipt-table th:nth-child(2),
+    .receipt-table td:nth-child(2) {
+      text-align: center;
+    }
+
+    .receipt-table th:nth-child(3),
+    .receipt-table td:nth-child(3),
+    .receipt-table th:nth-child(4),
+    .receipt-table td:nth-child(4) {
+      text-align: right;
+    }
+
+    .bill-qty-controls {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .mini-btn {
+      border: 1px solid #ccc;
+      background: #f1f3f5;
+      color: #111;
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      font-weight: 800;
+      font-size: 0.85rem;
+      cursor: pointer;
+      line-height: 1;
+    }
+
+    .mini-btn:hover {
+      background: #dee2e6;
+    }
+
+    .mini-del-btn {
+      border: none;
+      background: #ffe5ec;
+      color: #c9184a;
+      width: 22px;
+      height: 22px;
+      border-radius: 5px;
+      font-weight: 800;
+      font-size: 0.8rem;
+      cursor: pointer;
+      margin-left: 4px;
+    }
+
+    .mini-del-btn:hover {
+      background: #c9184a;
+      color: white;
+    }
+
+    .receipt-total-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px solid #111;
+      border-bottom: 2px solid #111;
+      padding: 10px 4px;
+      font-size: 1.12rem;
+      font-weight: 800;
+      margin-bottom: 14px;
+    }
+
+    .receipt-footer-note {
+      text-align: center;
+      font-size: 0.8rem;
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.45;
+    }
+
+    .modal-buttons {
+      display: flex;
+      gap: 10px;
+    }
+
+    .modal-buttons button {
+      flex: 1;
+      padding: 11px;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+
+    .print-pdf-btn {
+      background: var(--primary);
+      color: white;
+    }
+
+    .close-modal-btn {
+      background: #e9ecef;
+      color: #222;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #receipt-modal,
+      #receipt-modal * {
+        visibility: visible;
+      }
+      #receipt-modal {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white;
+        padding: 0;
+        display: block !important;
+      }
+      .receipt-box {
+        box-shadow: none;
+        max-width: 100%;
+        padding: 10px;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="top-nav-bar">
+      <button class="hamburger-btn" onclick="toggleDrawer()">
+        ☰ <span id="menu-label">Menu</span>
+      </button>
+
+      <div class="lang-toggle">
+        <button class="lang-btn active" id="lang-en" onclick="setLanguage('en')">English</button>
+        <button class="lang-btn" id="lang-ta" onclick="setLanguage('ta')">தமிழ்</button>
+      </div>
+    </div>
+
+    <img src="images/logo.png" alt="Charles Fast Food Logo" class="header-logo" />
+    <h1 id="shop-title">Charles Fast Food</h1>
+    <p id="shop-subtitle">Hot & Fresh Street-Style Fast Food • Kanuvaipalayam Junction</p>
+    <div class="header-links">
+      <a class="map-pill" id="header-map-link" href="https://maps.app.goo.gl/7QANfTtzcug8tvis5" target="_blank" rel="noopener">
+        📍 View Location on Google Maps
+      </a>
+    </div>
+    <div class="mode-toggle">
+      <button class="mode-btn active" id="btn-eating" onclick="setOrderMode('eating')">🍽️ Eating Rate</button>
+      <button class="mode-btn" id="btn-parcel" onclick="setOrderMode('parcel')">📦 Parcel Rate</button>
+    </div>
+  </header>
+
+  <!-- HAMBURGER SIDEBAR DRAWER WITH MENU NAVIGATION & CHECKOUT -->
+  <div class="drawer-overlay" id="drawer-overlay" onclick="if(event.target === this) toggleDrawer()">
+    <div class="drawer">
+      <div class="drawer-header">
+        <h3 id="drawer-title">📱 Navigation & WhatsApp Order</h3>
+        <button class="drawer-close" onclick="toggleDrawer()">✕</button>
+      </div>
+      <div class="drawer-body">
+        
+        <div>
+          <div class="drawer-section-title" id="sec-browse-title">Browse Menu / Journey</div>
+          <div class="drawer-nav-list">
+            <button class="drawer-nav-btn active" id="drawer-filter-all" onclick="filterMenuFromDrawer('all', this)">All Items (15)</button>
+            <button class="drawer-nav-btn" id="drawer-filter-snacks" onclick="filterMenuFromDrawer('Snacks', this)">Kalan & Chaat</button>
+            <button class="drawer-nav-btn" id="drawer-filter-rice" onclick="filterMenuFromDrawer('Rice', this)">Fried Rice</button>
+            <button class="drawer-nav-btn" id="drawer-filter-noodles" onclick="filterMenuFromDrawer('Noodles', this)">Noodles</button>
+            <button class="drawer-nav-btn" id="drawer-filter-story" onclick="scrollToStory()">Our Journey</button>
+          </div>
+        </div>
+
+        <hr style="border: 0; border-top: 1px solid #e9ecef;" />
+
+        <div>
+          <div class="drawer-section-title" id="sec-checkout-title">Customer Checkout Details</div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label id="lbl-cust-name">Customer Name:</label>
+            <input type="text" id="cust-name" placeholder="Enter your name" />
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label id="lbl-cust-phone">Phone Number (For Contacting):</label>
+            <input type="tel" id="cust-phone" value="6381032833" placeholder="Enter mobile number" />
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label id="lbl-cust-address">Delivery Address / Table No:</label>
+            <textarea id="cust-address" rows="2" placeholder="House address or table number"></textarea>
+          </div>
+          <div class="form-group" style="margin-bottom: 12px;">
+            <label id="lbl-cust-payment">Payment Details:</label>
+            <select id="cust-payment">
+              <option value="Cash" id="pay-cash">💵 Cash on Delivery / Counter</option>
+              <option value="Online Payment" id="pay-online">📱 Online Payment (UPI / GPay)</option>
+            </select>
+          </div>
+
+          <button class="whatsapp-order-btn" onclick="sendWhatsAppOrder()">
+            💬 <span id="whatsapp-btn-text">Send Order to WhatsApp</span>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <main class="menu-container" id="menu-grid"></main>
+
+  <section class="history-section" id="our-story">
+    <div class="history-header">
+      <span class="history-tag" id="hist-tag">SINCE 2007 • HARD WORK & PASSION</span>
+      <h2 id="hist-heading">The Unstoppable Journey of Charles Fast Food</h2>
+      <p id="hist-lead">From a humble street stall to a beloved family hotel—built on resilience, family strength, and authentic taste.</p>
+    </div>
+
+    <div class="timeline" id="timeline-container"></div>
+
+    <div class="location-card">
+      <div>
+        <h4 id="loc-title">📍 Visit Charles Fast Food</h4>
+        <p id="loc-address">Kanuvaipalayam Junction, Tamil Nadu 641113</p>
+      </div>
+      <a class="directions-btn" id="loc-btn" href="https://maps.app.goo.gl/7QANfTtzcug8tvis5" target="_blank" rel="noopener">
+        Open in Google Maps ↗
+      </a>
+    </div>
+
+    <div class="history-quote">
+      <div id="quote-text">"Every plate we serve carries nearly two decades of hard work, family unity, and love for great food."</div>
+      <span id="quote-author">— With Gratitude, Charles & Sons</span>
+    </div>
+  </section>
+
+  <div class="cart-bar">
+    <div class="cart-summary-box">
+      <div class="cart-top-row">
+        <span class="cart-badge-count" id="cart-count">0 Items</span>
+        <span><span id="total-bill-label">Total Bill:</span> <strong class="cart-total-amount" id="cart-total">₹0.00</strong></span>
+      </div>
+      <div class="cart-mode-tag" id="mode-label">Active Rate: 🍽️ Eating (Dine-In)</div>
+    </div>
+    <div class="cart-actions">
+      <button class="clear-btn" id="clear-btn" onclick="clearCart()">Clear</button>
+      <button id="bill-btn" onclick="viewOrder()">🧾 Bill / WhatsApp</button>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="receipt-modal" onclick="if(event.target === this) closeModal()">
+    <div class="receipt-box">
+      <div class="receipt-header">
+        <h2 id="rec-shop-name">CHARLES FAST FOOD</h2>
+        <p id="rec-shop-addr">Kanuvaipalayam Junction, Tamil Nadu 641113</p>
+        <p>Maps: maps.app.goo.gl/7QANfTtzcug8tvis5</p>
+      </div>
+      <div class="receipt-meta">
+        <span id="receipt-mode">Order: EATING</span>
+        <span id="receipt-date"></span>
+      </div>
+      <table class="receipt-table">
+        <thead>
+          <tr>
+            <th id="th-item">Item</th>
+            <th id="th-qty">Qty</th>
+            <th id="th-rate">Rate (₹)</th>
+            <th id="th-amt">Amount (₹)</th>
+            <th class="no-print" style="width: 28px;"></th>
+          </tr>
+        </thead>
+        <tbody id="receipt-items-body"></tbody>
+      </table>
+      <div class="receipt-total-row">
+        <span id="rec-grand-label">GRAND TOTAL</span>
+        <span id="receipt-grand-total">₹0.00</span>
+      </div>
+      <p class="receipt-footer-note" id="rec-thank-you">Thank you for supporting Charles & Sons! Visit again.</p>
+      <div class="modal-buttons no-print">
+        <button class="close-modal-btn" id="rec-close-btn" onclick="closeModal()">Close</button>
+        <button class="print-pdf-btn" id="rec-print-btn" onclick="window.print()">🖨️ Print / Save PDF</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const menuItems = [
+      { id: 1, nameEn: "Kalan", nameTa: "காளான் (Kalan)", category: "Snacks", type: "veg", eating: 30, parcel: 40, img: "images/kalan.jpg" },
+      { id: 2, nameEn: "Egg Kalan", nameTa: "முட்டை காளான் (Egg Kalan)", category: "Snacks", type: "non-veg", eating: 50, parcel: 60, img: "images/egg-kalan.jpg" },
+      { id: 3, nameEn: "Pani Puri", nameTa: "பானி பூரி (Pani Puri)", category: "Snacks", type: "veg", eating: 30, parcel: 40, img: "images/pani-puri.jpg" },
+      { id: 4, nameEn: "Masala Puri", nameTa: "மசாலா பூரி (Masala Puri)", category: "Snacks", type: "veg", eating: 30, parcel: 40, img: "images/masala-puri.jpg" },
+      { id: 5, nameEn: "Bhel Puri", nameTa: "பேல் பூரி (Bhel Puri)", category: "Snacks", type: "veg", eating: 30, parcel: 40, img: "images/bhel-puri.jpg" },
+      { id: 6, nameEn: "Soya Manchurian", nameTa: "சோயா மஞ்சூரியன் (Soya Manchurian)", category: "Snacks", type: "veg", eating: 30, parcel: 50, img: "images/soya-manchurian.jpg" },
+      { id: 7, nameEn: "Egg Soya Manchurian", nameTa: "முட்டை சோயா மஞ்சூரியன்", category: "Snacks", type: "non-veg", eating: 50, parcel: 60, img: "images/egg-soya.jpg" },
+      { id: 8, nameEn: "Veg Rice", nameTa: "வெஜ் ரைஸ் (Veg Rice)", category: "Rice", type: "veg", eating: 50, parcel: 60, img: "images/veg-rice.jpg" },
+      { id: 9, nameEn: "Egg Rice", nameTa: "முட்டை ரைஸ் (Egg Rice)", category: "Rice", type: "non-veg", eating: 50, parcel: 60, img: "images/egg-rice.jpg" },
+      { id: 10, nameEn: "Chicken Rice", nameTa: "சிக்கன் ரைஸ் (Chicken Rice)", category: "Rice", type: "non-veg", eating: 80, parcel: 100, img: "images/chicken-rice.jpg" },
+      { id: 11, nameEn: "Mushroom Rice", nameTa: "மஷ்ரூம் ரைஸ் (Mushroom Rice)", category: "Rice", type: "veg", eating: 80, parcel: 100, img: "images/mushroom-rice.jpg" },
+      { id: 12, nameEn: "Veg Noodles", nameTa: "வெஜ் நூடுல்ஸ் (Veg Noodles)", category: "Noodles", type: "veg", eating: 50, parcel: 60, img: "images/veg-noodles.jpg" },
+      { id: 13, nameEn: "Egg Noodles", nameTa: "முட்டை நூடுல்ஸ் (Egg Noodles)", category: "Noodles", type: "non-veg", eating: 50, parcel: 60, img: "images/egg-noodles.jpg" },
+      { id: 14, nameEn: "Chicken Noodles", nameTa: "சிக்கன் நூடுல்ஸ் (Chicken Noodles)", category: "Noodles", type: "non-veg", eating: 80, parcel: 100, img: "images/chicken-noodles.jpg" },
+      { id: 15, nameEn: "Mushroom Noodles", nameTa: "மஷ்ரூம் நூடுல்ஸ் (Mushroom Noodles)", category: "Noodles", type: "veg", eating: 80, parcel: 100, img: "images/mushroom-noodles.jpg" }
+    ];
+
+    const translations = {
+      en: {
+        shopTitle: "Charles Fast Food",
+        shopSubtitle: "Hot & Fresh Street-Style Fast Food • Kanuvaipalayam Junction",
+        headerMapLink: "📍 View Location on Google Maps",
+        btnEating: "🍽️ Eating Rate",
+        btnParcel: "📦 Parcel Rate",
+        menuLabel: "Menu",
+        drawerTitle: "📱 Navigation & WhatsApp Order",
+        secBrowseTitle: "Browse Menu / Journey",
+        secCheckoutTitle: "Customer Checkout Details",
+        filterAll: "All Items (15)",
+        filterSnacks: "Kalan & Chaat",
+        filterRice: "Fried Rice",
+        filterNoodles: "Noodles",
+        filterStory: "Our Journey",
+        lblCustName: "Customer Name:",
+        lblCustPhone: "Phone Number (For Contacting):",
+        lblCustAddress: "Delivery Address / Table No:",
+        lblCustPayment: "Payment Details:",
+        payCash: "💵 Cash on Delivery / Counter",
+        payOnline: "📱 Online Payment (UPI / GPay)",
+        whatsappBtnText: "Send Order to WhatsApp",
+        vegBadge: "● VEG",
+        nonVegBadge: "▲ EGG / NON-VEG",
+        eatingShort: "Eating",
+        parcelShort: "Parcel",
+        eatingRateLabel: "Eating Rate",
+        parcelRateLabel: "Parcel Rate",
+        addBtn: "+ Add",
+        histTag: "SINCE 2007 • HARD WORK & PASSION",
+        histHeading: "The Unstoppable Journey of Charles Fast Food",
+        histLead: "From a humble street stall to a beloved family hotel—built on resilience, family strength, and authentic taste.",
+        timeline: [
+          {
+            year: "2007 • The Humble Beginning",
+            title: "Where It All Started in Mettupalayam",
+            text: "Our journey began in 2007 near <strong>Abhirami Theatre in Mettupalayam</strong>. With big dreams and pure hard work, Founder <strong>Charles</strong> started serving hot, flavorful street food that quickly won the hearts of local food lovers over the next 3 to 4 years."
+          },
+          {
+            year: "2011 – 2019 • Expansion & Growth",
+            title: "A New Home in Kanuvaipalayam",
+            text: "To reach more customers, the shop moved to <strong>Kanuvaipalayam</strong>—right opposite the theatre and near <strong>Anbu Clinic</strong>. Year after year, the shop flourished, becoming a favorite evening spot known for generous portions and unforgettable flavors."
+          },
+          {
+            year: "2020 – 2023 • The Greatest Test",
+            title: "Storms, Sacrifice & A Fearless Comeback",
+            text: "In 2020, the COVID-19 lockdown brought a devastating downturn. Soon after, owner <strong>Charles</strong> suffered a serious accident, pushing the family into deep financial hardship. Yet our spirit never broke—after a year of recovery and determination, the stall proudly reopened its doors to serve once again."
+          },
+          {
+            year: "2024 • A Dream Realized",
+            title: "Stepping Into Our Hotel at Kanuvaipalayam Junction",
+            text: "Years of sweat and perseverance paid off in 2024 when our street stall officially upgraded into a cozy rented hotel right at <strong>Kanuvaipalayam Junction</strong>—giving our loyal customers a welcoming space to sit, dine, and enjoy every dish fresh off the stove."
+          },
+          {
+            year: "Today & Beyond • The Next Generation",
+            title: "Taking Charles Fast Food Digital",
+            text: "Today, Charles's sons are carrying the legacy forward—modernizing the shop day by day and launching our very own online menu experience. With your continued love and support, our family's journey will keep growing stronger for generations to come!"
+          }
+        ],
+        locTitle: "📍 Visit Charles Fast Food",
+        locAddress: "Kanuvaipalayam Junction, Tamil Nadu 641113",
+        locBtn: "Open in Google Maps ↗",
+        quoteText: "\"Every plate we serve carries nearly two decades of hard work, family unity, and love for great food.\"",
+        quoteAuthor: "— With Gratitude, Charles & Sons",
+        itemSingular: "Item",
+        itemPlural: "Items",
+        totalBillLabel: "Total Bill:",
+        activeEating: "Active Rate: 🍽️ Eating (Dine-In)",
+        activeParcel: "Active Rate: 📦 Parcel (Takeaway)",
+        clearBtn: "Clear",
+        billBtn: "🧾 Bill / WhatsApp",
+        emptyCartAlert: "No items added yet! Tap '+ Add' on any dish.",
+        recShopName: "CHARLES FAST FOOD / சார்லஸ் ஃபாஸ்ட் ஃபுட்",
+        recShopAddr: "Kanuvaipalayam Junction, Tamil Nadu 641113",
+        recOrderEating: "Order: EATING (DINE-IN)",
+        recOrderParcel: "Order: PARCEL (TAKEAWAY)",
+        thItem: "Item",
+        thQty: "Qty",
+        thRate: "Rate (₹)",
+        thAmt: "Amount (₹)",
+        recGrandLabel: "GRAND TOTAL",
+        recThankYou: "Thank you for supporting Charles & Sons! Visit again.",
+        recCloseBtn: "Close",
+        recPrintBtn: "🖨️ Print / Save PDF"
+      },
+      ta: {
+        shopTitle: "சார்லஸ் ஃபாஸ்ட் ஃபுட்",
+        shopSubtitle: "சூடான & சுவையான ஃபாஸ்ட் ஃபுட் • கணுவாய்பாளையம் சந்திப்பு",
+        headerMapLink: "📍 கூகுள் மேப்ஸில் இடத்தைக் காண்க",
+        btnEating: "🍽️ சாப்பிடும் விலை",
+        btnParcel: "📦 பார்சல் விலை",
+        menuLabel: "பட்டியல்",
+        drawerTitle: "📱 வழிசெலுத்தல் & WhatsApp ஆர்டர்",
+        secBrowseTitle: "உணவுகள் / வரலாற்றைக் காண்க",
+        secCheckoutTitle: "வாடிக்கையாளர் விவரங்கள்",
+        filterAll: "அனைத்து உணவுகள் (15)",
+        filterSnacks: "காளான் & சாட்",
+        filterRice: "ஃபிரைடு ரைஸ்",
+        filterNoodles: "நூடுல்ஸ்",
+        filterStory: "எங்கள் வரலாறு",
+        lblCustName: "வாடிக்கையாளர் பெயர் (Name):",
+        lblCustPhone: "தொலைபேசி எண் (Phone Number):",
+        lblCustAddress: "முகவரி / மேஜை எண் (Address / Table No):",
+        lblCustPayment: "பেম்மென்ட் விவரம் (Payment Details):",
+        payCash: "💵 ரொக்கம் (Cash on Delivery / Counter)",
+        payOnline: "📱 ஆன்லைன் பணம் (UPI / GPay)",
+        whatsappBtnText: "WhatsApp-ல் ஆர்டரை அனுப்பு",
+        vegBadge: "● சைவம் (VEG)",
+        nonVegBadge: "▲ முட்டை / அசைவம்",
+        eatingShort: "சாப்பிட",
+        parcelShort: "பார்சல்",
+        eatingRateLabel: "சாப்பிடும் விலை",
+        parcelRateLabel: "பார்சல் விலை",
+        addBtn: "+ சேர்",
+        histTag: "2007 முதல் • கடின உழைப்பு & அர்ப்பணிப்பு",
+        histHeading: "சார்லஸ் ஃபாஸ்ட் ஃபுட் கடந்து வந்த பாதை",
+        histLead: "ஒரு சிறிய தள்ளுவண்டிக் கடையிலிருந்து குடும்ப உணவகமாக உயர்ந்த விடாமுயற்சி மற்றும் சுவையின் வரலாறு.",
+        timeline: [
+          {
+            year: "2007 • எளிய தொடக்கம்",
+            title: "மேட்டுப்பாளையத்தில் தொடங்கிய பயணம்",
+            text: "எங்கள் பயணம் 2007-ஆம் ஆண்டு <strong>மேட்டுப்பாளையம் அபிராமி தியேட்டர் அருகே</strong> தொடங்கியது. பெரிய கனவுகளுடனும் கடின உழைப்புடனும் நிறுவனர் <strong>சார்லஸ்</strong> அவர்கள் தொடங்கிய இந்தக் கடை, அடுத்த 3 முதல் 4 ஆண்டுகளில் உணவுப் பிரியர்களின் மனதில் நீங்கா இடம் பிடித்தது."
+          },
+          {
+            year: "2011 – 2019 • வளர்ச்சியும் விரிவாக்கமும்",
+            title: "கணுவாய்பாளையத்தில் புதிய அத்தியாயம்",
+            text: "மேலும் பல வாடிக்கையாளர்களைச் சென்றடைய, கடை <strong>கணுவாய்பாளையத்தில்</strong> தியேட்டருக்கு எதிரே மற்றும் <strong>அன்பு கிளினிக் அருகே</strong> மாற்றப்பட்டது. ஆண்டுகள் செல்லச் செல்ல வாடிக்கையாளர்களின் பேராதரவுடன் கடை மிகப்பெரிய வளர்ச்சியைக் கண்டது."
+          },
+          {
+            year: "2020 – 2023 • சோதனைகளும் மீண்டெழுதலும்",
+            title: "கொரோனா பேரிடரும் தளராத நம்பிக்கையும்",
+            text: "2020-ஆம் ஆண்டு கொரோனா பொதுமுடக்கத்தால் கடை பெரும் வீழ்ச்சியைச் சந்தித்தது. அதனைத் தொடர்ந்து உரிமையாளர் <strong>சார்லஸ்</strong> அவர்களுக்கு ஏற்பட்ட விபத்தால் குடும்பம் மிகுந்த வறுமையில் வாடியது. ஆனாலும் மனம் தளராமல், ஒரு வருடத்திற்குப் பிறகு மீண்டும் கடையைத் திறந்து உழைக்கத் தொடங்கினோம்."
+          },
+          {
+            year: "2024 • நனவான கனவு",
+            title: "கணுவாய்பாளையம் சந்திப்பில் புதிய உணவகம்",
+            text: "பல ஆண்டுகால உழைப்பிற்குப் பலனாக, 2024-ஆம் ஆண்டு எங்கள் சாலையோரக் கடை <strong>கணுவாய்பாளையம் சந்திப்பில்</strong> ஒரு வாடகை உணவகமாக (ஹோட்டலாக) உயர்ந்தது. வாடிக்கையாளர்கள் அமர்ந்து சூடாகச் சாப்பிடும் வசதியுடன் புதிய வடிவம் பெற்றது."
+          },
+          {
+            year: "இன்று & இனி • அடுத்த தலைமுறை",
+            title: "டிஜிட்டல் உலகில் சார்லஸ் ஃபாஸ்ட் ஃபுட்",
+            text: "இன்று சார்லஸ் அவர்களின் மகன்கள் கடையை நாளுக்கு நாள் நவீனப்படுத்தி, இணையதள வசதியுடன் அடுத்த கட்டத்திற்கு கொண்டு செல்கின்றனர். உங்கள் அன்போடும் ஆதரவோடும் எங்கள் பயணம் என்றென்றும் தொடரும்!"
+          }
+        ],
+        locTitle: "📍 எங்கள் முகவரி",
+        locAddress: "கணுவாய்பாளையம் சந்திப்பு, தமிழ்நாடு 641113",
+        locBtn: "கூகுள் மேப்ஸில் திறக்கவும் ↗",
+        quoteText: "\"நாங்கள் பரிமாறும் ஒவ்வொரு தட்டிலும் கிட்டத்தட்ட இருபது ஆண்டுகால கடின உழைப்பும், குடும்ப ஒற்றுமையும், சுவையின் மீதான காதலும் நிறைந்துள்ளது.\"",
+        quoteAuthor: "— நன்றியுடன், சார்லஸ் & சன்ஸ்",
+        itemSingular: "உணவு",
+        itemPlural: "உணவுகள்",
+        totalBillLabel: "மொத்த பில்:",
+        activeEating: "தேர்ந்தெடுத்த முறை: 🍽️ சாப்பிடும் விலை",
+        activeParcel: "தேர்ந்தெடுத்த முறை: 📦 பார்சல் விலை",
+        clearBtn: "அழி",
+        billBtn: "🧾 பில் / WhatsApp",
+        emptyCartAlert: "உணவுகள் எதுவும் சேர்க்கப்படவில்லை! '+ சேர்' பொத்தானை அழுத்தவும்.",
+        recShopName: "சார்லஸ் ஃபாஸ்ட் ஃபுட் (CHARLES FAST FOOD)",
+        recShopAddr: "கணுவாய்பாளையம் சந்திப்பு, தமிழ்நாடு 641113",
+        recOrderEating: "வகை: சாப்பிட (EATING)",
+        recOrderParcel: "வகை: பார்சல் (PARCEL)",
+        thItem: "உணவு (Item)",
+        thQty: "எண்ணிக்கை",
+        thRate: "விலை (₹)",
+        thAmt: "தொகை (₹)",
+        recGrandLabel: "மொத்தத் தொகை (GRAND TOTAL)",
+        recThankYou: "சார்லஸ் & சன்ஸ் உணவகத்திற்கு வருகை தந்தமைக்கு நன்றி!",
+        recCloseBtn: "மூடு",
+        recPrintBtn: "🖨️ பிரிண்ட் / PDF சேமி"
+      }
+    };
+
+    let currentLang = "en";
+    let orderMode = "eating";
+    let currentCategory = "all";
+    let cart = {};
+
+    function formatFloat(num) {
+      return "₹" + Number(num).toFixed(2);
+    }
+
+    function toggleDrawer() {
+      const overlay = document.getElementById("drawer-overlay");
+      overlay.classList.toggle("open");
+    }
+
+    function setLanguage(lang) {
+      currentLang = lang;
+      document.getElementById("lang-en").classList.toggle("active", lang === "en");
+      document.getElementById("lang-ta").classList.toggle("active", lang === "ta");
+
+      const t = translations[lang];
+      document.getElementById("menu-label").innerText = t.menuLabel;
+      document.getElementById("shop-title").innerText = t.shopTitle;
+      document.getElementById("shop-subtitle").innerText = t.shopSubtitle;
+      document.getElementById("header-map-link").innerText = t.headerMapLink;
+      document.getElementById("btn-eating").innerText = t.btnEating;
+      document.getElementById("btn-parcel").innerText = t.btnParcel;
+      document.getElementById("drawer-title").innerText = t.drawerTitle;
+      document.getElementById("sec-browse-title").innerText = t.secBrowseTitle;
+      document.getElementById("sec-checkout-title").innerText = t.secCheckoutTitle;
+      document.getElementById("drawer-filter-all").innerText = t.filterAll;
+      document.getElementById("drawer-filter-snacks").innerText = t.filterSnacks;
+      document.getElementById("drawer-filter-rice").innerText = t.filterRice;
+      document.getElementById("drawer-filter-noodles").innerText = t.filterNoodles;
+      document.getElementById("drawer-filter-story").innerText = t.filterStory;
+      document.getElementById("lbl-cust-name").innerText = t.lblCustName;
+      document.getElementById("lbl-cust-phone").innerText = t.lblCustPhone;
+      document.getElementById("lbl-cust-address").innerText = t.lblCustAddress;
+      document.getElementById("lbl-cust-payment").innerText = t.lblCustPayment;
+      document.getElementById("pay-cash").innerText = t.payCash;
+      document.getElementById("pay-online").innerText = t.payOnline;
+      document.getElementById("whatsapp-btn-text").innerText = t.whatsappBtnText;
+      document.getElementById("hist-tag").innerText = t.histTag;
+      document.getElementById("hist-heading").innerText = t.histHeading;
+      document.getElementById("hist-lead").innerText = t.histLead;
+      document.getElementById("loc-title").innerText = t.locTitle;
+      document.getElementById("loc-address").innerText = t.locAddress;
+      document.getElementById("loc-btn").innerText = t.locBtn;
+      document.getElementById("quote-text").innerText = t.quoteText;
+      document.getElementById("quote-author").innerText = t.quoteAuthor;
+      document.getElementById("total-bill-label").innerText = t.totalBillLabel;
+      document.getElementById("clear-btn").innerText = t.clearBtn;
+      document.getElementById("bill-btn").innerText = t.billBtn;
+      document.getElementById("rec-shop-name").innerText = t.recShopName;
+      document.getElementById("rec-shop-addr").innerText = t.recShopAddr;
+      document.getElementById("th-item").innerText = t.thItem;
+      document.getElementById("th-qty").innerText = t.thQty;
+      document.getElementById("th-rate").innerText = t.thRate;
+      document.getElementById("th-amt").innerText = t.thAmt;
+      document.getElementById("rec-grand-label").innerText = t.recGrandLabel;
+      document.getElementById("rec-thank-you").innerText = t.recThankYou;
+      document.getElementById("rec-close-btn").innerText = t.recCloseBtn;
+      document.getElementById("rec-print-btn").innerText = t.recPrintBtn;
+
+      renderMenu();
+      renderTimeline();
+      updateCartBar();
+    }
+
+    function setOrderMode(mode) {
+      orderMode = mode;
+      document.getElementById("btn-eating").classList.toggle("active", mode === "eating");
+      document.getElementById("btn-parcel").classList.toggle("active", mode === "parcel");
+      renderMenu();
+      updateCartBar();
+      if (document.getElementById("receipt-modal").classList.contains("open")) {
+        renderReceiptItems();
+      }
+    }
+
+    function filterMenuFromDrawer(category, btnElement) {
+      currentCategory = category;
+      document.querySelectorAll(".drawer-nav-list .drawer-nav-btn").forEach(btn => btn.classList.remove("active"));
+      if (btnElement) btnElement.classList.add("active");
+      renderMenu();
+      toggleDrawer(); // Close drawer automatically after selection
+    }
+
+    function scrollToStory() {
+      toggleDrawer();
+      document.getElementById('our-story').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function renderMenu() {
+      const grid = document.getElementById("menu-grid");
+      grid.innerHTML = "";
+      const t = translations[currentLang];
+
+      const filtered = menuItems.filter(item => {
+        if (currentCategory === "all") return true;
+        return item.category === currentCategory;
+      });
+
+      filtered.forEach(item => {
+        const price = orderMode === "eating" ? item.eating : item.parcel;
+        const comparePrice = orderMode === "eating" ? item.parcel : item.eating;
+        const compareLabel = orderMode === "eating" ? t.parcelShort : t.eatingShort;
+        const itemName = currentLang === "ta" ? item.nameTa : item.nameEn;
+        const qty = cart[item.id] || 0;
+
+        const card = document.createElement("div");
+        card.className = "card";
+
+        let actionHtml = "";
+        if (qty === 0) {
+          actionHtml = `<button class="add-btn" onclick="changeQty(${item.id}, 1)">${t.addBtn}</button>`;
+        } else {
+          actionHtml = `
+            <div class="qty-stepper">
+              <button onclick="changeQty(${item.id}, -1)">-</button>
+              <span>${qty}</span>
+              <button onclick="changeQty(${item.id}, 1)">+</button>
+            </div>
+          `;
+        }
+
+        card.innerHTML = `
+          <div class="card-img-wrap" onclick="changeQty(${item.id}, 1)" title="Click to add to cart">
+            <img src="${item.img}" alt="${itemName}" class="card-img" onerror="this.src='images/logo.png'" />
+            <span class="badge ${item.type}">${item.type === 'veg' ? t.vegBadge : t.nonVegBadge}</span>
+          </div>
+          <div class="card-body">
+            <div>
+              <h3>${itemName}</h3>
+              <div class="rate-compare">${compareLabel} Rate: ${formatFloat(comparePrice)}</div>
+            </div>
+            <div class="card-footer">
+              <div class="price">
+                ${formatFloat(price)}
+                <span>${orderMode === 'eating' ? t.eatingRateLabel : t.parcelRateLabel}</span>
+              </div>
+              ${actionHtml}
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function renderTimeline() {
+      const container = document.getElementById("timeline-container");
+      container.innerHTML = "";
+      const t = translations[currentLang];
+
+      t.timeline.forEach(step => {
+        const item = document.createElement("div");
+        item.className = "timeline-item";
+        item.innerHTML = `
+          <span class="timeline-year">${step.year}</span>
+          <h3>${step.title}</h3>
+          <p>${step.text}</p>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function changeQty(itemId, delta) {
+      if (!cart[itemId]) cart[itemId] = 0;
+      cart[itemId] += delta;
+      if (cart[itemId] <= 0) {
+        delete cart[itemId];
+      }
+      renderMenu();
+      updateCartBar();
+    }
+
+    function clearCart() {
+      cart = {};
+      renderMenu();
+      updateCartBar();
+      closeModal();
+    }
+
+    function getCartTotalCount() {
+      return Object.values(cart).reduce((a, b) => a + b, 0);
+    }
+
+    function calculateGrandTotal() {
+      let total = 0;
+      for (const [idStr, qty] of Object.entries(cart)) {
+        const item = menuItems.find(i => i.id == idStr);
+        if (item) {
+          const price = orderMode === "eating" ? item.eating : item.parcel;
+          total += price * qty;
+        }
+      }
+      return total;
+    }
+
+    function updateCartBar() {
+      const t = translations[currentLang];
+      const count = getCartTotalCount();
+      const total = calculateGrandTotal();
+
+      const itemWord = count === 1 ? t.itemSingular : t.itemPlural;
+      document.getElementById("cart-count").innerText = `${count} ${itemWord}`;
+      document.getElementById("cart-total").innerText = formatFloat(total);
+      document.getElementById("mode-label").innerText = orderMode === "eating" ? t.activeEating : t.activeParcel;
+    }
+
+    function viewOrder() {
+      if (getCartTotalCount() === 0) {
+        alert(translations[currentLang].emptyCartAlert);
+        return;
+      }
+      toggleDrawer();
+    }
+
+    function closeModal() {
+      document.getElementById("receipt-modal").classList.remove("open");
+    }
+
+    function sendWhatsAppOrder() {
+      if (getCartTotalCount() === 0) {
+        alert(translations[currentLang].emptyCartAlert);
+        return;
+      }
+
+      const name = document.getElementById("cust-name").value.trim();
+      const phone = document.getElementById("cust-phone").value.trim();
+      const address = document.getElementById("cust-address").value.trim();
+      const payment = document.getElementById("cust-payment").value;
+
+      if (!name || !phone) {
+        alert(currentLang === 'ta' ? "தயவுசெய்து உங்கள் பெயர் மற்றும் தொலைபேசி எண்ணை உள்ளிடவும்!" : "Please enter your name and phone number!");
+        return;
+      }
+
+      let orderText = `*NEW ORDER - CHARLES FAST FOOD* 🍔\n`;
+      orderText += `--------------------------------\n`;
+      orderText += `👤 *Name:* ${name}\n`;
+      orderText += `📞 *Phone:* ${phone}\n`;
+      orderText += `📍 *Address/Table:* ${address || 'N/A'}\n`;
+      orderText += `🏷️ *Order Type:* ${orderMode.toUpperCase()}\n`;
+      orderText += `💳 *Payment:* ${payment}\n`;
+      orderText += `--------------------------------\n`;
+      orderText += `*Order Items:* \n`;
+
+      for (const [idStr, qty] of Object.entries(cart)) {
+        const item = menuItems.find(i => i.id == idStr);
+        if (!item) continue;
+        const price = orderMode === "eating" ? item.eating : item.parcel;
+        const amt = price * qty;
+        const itemName = currentLang === "ta" ? item.nameTa : item.nameEn;
+        orderText += `• ${itemName} x ${qty} = ₹${amt}\n`;
+      }
+
+      orderText += `--------------------------------\n`;
+      orderText += `💰 *GRAND TOTAL: ₹${calculateGrandTotal().toFixed(2)}*\n`;
+      orderText += `--------------------------------\n`;
+      orderText += `Thank you!`;
+
+      const shopWhatsAppNumber = "916381032833"; 
+      const encodedUrl = `https://wa.me/${shopWhatsAppNumber}?text=` + encodeURIComponent(orderText);
+
+      window.open(encodedUrl, '_blank');
+    }
+
+    window.onload = function() {
+      renderMenu();
+      renderTimeline();
+      updateCartBar();
+    };
+  </script>
+</body>
+</html>
